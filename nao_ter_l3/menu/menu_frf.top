@@ -1,0 +1,26 @@
+topic: ~menu()
+language: frf
+
+concept:(salutation) ^rand[bonjour coucou salut "c'est un plaisir de vous voir"]
+
+u:(~salutation) ~salutation que puis-je faire pour vous? Pour connaitre les options dites options
+
+u:(option) Pour discuter avec moi dites conversation. Pour connaitre la météo dites météo. Pour connaitre vos heures de prises de médicaments dites médicaments. Pour enregistrer un rendez-vous dites agenda. Pour actualiser la base de données dites actualiser.
+
+u:(conversation) De quoi voulez-vous parler aujourd'hui?
+    u1:({parlons "je veux parler de" de} _*) D'accord, parlons de $1 $2 $3 $4 $5 $6 $conversation=$1+'|'+$2+'|'+$3+'|'+$4+'|'+$5+'|'+$6
+u:(médicaments) Voilà la liste de vos prescriptions $med=1
+u:([agenda "rendez-vous"]) Voulez-vous enregistrer un rendez-vous?
+    u2:(Oui) Quel nom voulez-vous lui donner?
+        u3: (_*) Voulez-vous enregistrer $1 $nom=$1
+            u4: (Oui) A quelle heure?
+                u5: (_* heure _*) L'heure est-elle $1 heure $2 ? $heure=$1 $minute=$2
+                    u6:(Oui) J'enregistre votre rendez-vous avec $nom à $heure heure $minute $rdv=$nom+'|'+$heure+'|'+$minute
+                    u6:(Non) Veuillez recommencer
+                u5:(Annuler) J'annule l'enregistrement
+            u4: (Non) Veuillez recommencer
+    u2: (Non) Veuillez recommencer
+u:(actualiser) j'actualise la base de données $bdd=1 
+
+u:(définition) Quel mot voulez-vous que je vous définisse?
+    u1:(_*) Je vais chercher des informations à propos de $1 $definition=$1
